@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityUtilities.UnityUtilities;
 
 namespace UnityUtilities
 {
@@ -116,7 +117,7 @@ namespace UnityUtilities
         /// <param name="parent">The parent Transform for the UI text element. If null, the element will have no parent.</param>
         /// <returns>Returns the <see cref="TMPro.TextMeshProUGUI"/> component associated with the created UI text element.</returns>
         public static TMPro.TextMeshProUGUI UIText
-            (string text, EightDirection direction, float fontSize = 36, Color? color = null, Transform parent = null)
+            (string text, GridDirection direction, float fontSize = 36, Color? color = null, Transform parent = null)
         {
             // Ensure a Canvas exists in the scene
             Canvas canvas = Object.FindFirstObjectByType<Canvas>();
@@ -141,55 +142,55 @@ namespace UnityUtilities
             // Set anchor and position based on the direction
             switch (direction)
             {
-                case EightDirection.TopLeft:
+                case GridDirection.TopLeft:
                     rectTransform.anchorMin = new Vector2(0, 1);
                     rectTransform.anchorMax = new Vector2(0, 1);
                     rectTransform.pivot = new Vector2(0, 1);
                     rectTransform.anchoredPosition = Vector2.zero;
                     break;
-                case EightDirection.TopCenter:
+                case GridDirection.TopCenter:
                     rectTransform.anchorMin = new Vector2(0.5f, 1);
                     rectTransform.anchorMax = new Vector2(0.5f, 1);
                     rectTransform.pivot = new Vector2(0.5f, 1);
                     rectTransform.anchoredPosition = Vector2.zero;
                     break;
-                case EightDirection.TopRight:
+                case GridDirection.TopRight:
                     rectTransform.anchorMin = new Vector2(1, 1);
                     rectTransform.anchorMax = new Vector2(1, 1);
                     rectTransform.pivot = new Vector2(1, 1);
                     rectTransform.anchoredPosition = Vector2.zero;
                     break;
-                case EightDirection.CenterLeft:
+                case GridDirection.CenterLeft:
                     rectTransform.anchorMin = new Vector2(0, 0.5f);
                     rectTransform.anchorMax = new Vector2(0, 0.5f);
                     rectTransform.pivot = new Vector2(0, 0.5f);
                     rectTransform.anchoredPosition = Vector2.zero;
                     break;
-                case EightDirection.Center:
+                case GridDirection.Center:
                     rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
                     rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
                     rectTransform.pivot = new Vector2(0.5f, 0.5f);
                     rectTransform.anchoredPosition = Vector2.zero;
                     break;
-                case EightDirection.CenterRight:
+                case GridDirection.CenterRight:
                     rectTransform.anchorMin = new Vector2(1, 0.5f);
                     rectTransform.anchorMax = new Vector2(1, 0.5f);
                     rectTransform.pivot = new Vector2(1, 0.5f);
                     rectTransform.anchoredPosition = Vector2.zero;
                     break;
-                case EightDirection.BottomLeft:
+                case GridDirection.BottomLeft:
                     rectTransform.anchorMin = new Vector2(0, 0);
                     rectTransform.anchorMax = new Vector2(0, 0);
                     rectTransform.pivot = new Vector2(0, 0);
                     rectTransform.anchoredPosition = Vector2.zero;
                     break;
-                case EightDirection.BottomCenter:
+                case GridDirection.BottomCenter:
                     rectTransform.anchorMin = new Vector2(0.5f, 0);
                     rectTransform.anchorMax = new Vector2(0.5f, 0);
                     rectTransform.pivot = new Vector2(0.5f, 0);
                     rectTransform.anchoredPosition = Vector2.zero;
                     break;
-                case EightDirection.BottomRight:
+                case GridDirection.BottomRight:
                     rectTransform.anchorMin = new Vector2(1, 0);
                     rectTransform.anchorMax = new Vector2(1, 0);
                     rectTransform.pivot = new Vector2(1, 0);
