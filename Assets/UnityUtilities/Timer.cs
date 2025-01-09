@@ -146,26 +146,26 @@ namespace UnityUtilities
 		/// <value>
 		/// A float representing the current remaining time of the countdown timer.
 		/// </value>
-		public float TimeRemaining => _currentTime;
+		public float TimeRemaining => CurrentTime;
 
 		/// Represents the progress of the countdown timer as a value between 0 and 1.
 		/// The value is calculated based on the ratio of time elapsed to the total initial time.
 		/// A value of 0 indicates the timer has just started, whereas a value of 1 indicates the timer has completed.
-		public float Progress => 1 - (_currentTime / _initialTime);
+		public float Progress => 1 - (CurrentTime / InitialTime);
 
 		/// <summary>
 		/// Represents the initial duration of the countdown timer in seconds.
 		/// This value is set upon initialization and remains constant throughout the lifecycle of the timer.
 		/// It is used as a baseline for calculations, such as determining the timer's progress or resetting the timer.
 		/// </summary>
-		private float _initialTime;
+		protected float InitialTime;
 
 		/// <summary>
 		/// Represents the current elapsed time or remaining time for a timer.
 		/// This value is used to track the progress of the CountdownTimer object,
 		/// decreasing over time until reaching zero.
 		/// </summary>
-		private float _currentTime;
+		protected float CurrentTime;
 
 		/// <summary>
 		/// Represents a countdown timer that counts down from a specified time to zero.
@@ -173,8 +173,8 @@ namespace UnityUtilities
 		/// </summary>
 		public CountdownTimer(float initialTime, bool registerToManager = true) : base(registerToManager)
 		{
-			_initialTime = initialTime;
-			_currentTime = initialTime;
+			InitialTime = initialTime;
+			CurrentTime = initialTime;
 		}
 
 		/// <summary>
@@ -185,8 +185,8 @@ namespace UnityUtilities
 		{
 			if (IsRunning)
 			{
-				_currentTime -= deltaTime;
-				if (_currentTime <= 0)
+				CurrentTime -= deltaTime;
+				if (CurrentTime <= 0)
 				{
 					Complete();
 				}
@@ -203,17 +203,42 @@ namespace UnityUtilities
 		/// </remarks>
 		public override void Reset()
 		{
-			_currentTime = _initialTime;
+			CurrentTime = InitialTime;
+			Stop();
 		}
 
 		/// Represents an abstract base class for a timer, providing basic functionalities such as starting, stopping,
 		/// pausing, resuming, and resetting. It also defines an interface for ticking and behavior specific to derived timers.
-		private void Complete()
+		protected virtual void Complete()
 		{
-			_currentTime = 0;
+			CurrentTime = 0;
 			IsRunning = false;
 			OnTimerComplete.Invoke();
 		}
+	}
+
+	public class LoopingCountdownTimer : CountdownTimer
+	{
+		public LoopingCountdownTimer(float initialTime, bool registerToManager = true) : base(initialTime, registerToManager)
+		{
+		}
+
+		public void SetNewTime(float newTime, bool restartCountdownTimer = false)
+		{
+			InitialTime = newTime;
+			if (restartCountdownTimer)
+			{
+				CurrentTime = newTime;
+			}
+		}
+
+		protected override void Complete()
+		{
+			CurrentTime = InitialTime;
+			OnTimerComplete.Invoke();
+			Start();
+		}
+		
 	}
 
 	/// <summary>

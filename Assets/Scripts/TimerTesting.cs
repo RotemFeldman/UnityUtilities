@@ -10,8 +10,7 @@ namespace DefaultNamespace
 {
     public class TimerTesting : MonoBehaviour
     {
-        private CountdownTimer timer;
-        private Stopwatch stopwatch;
+        private LoopingCountdownTimer timer;
 
         private void OnEnable()
         {
@@ -27,15 +26,15 @@ namespace DefaultNamespace
 
         private void Awake()
         {
-            timer = new CountdownTimer(3f);
-            stopwatch = new Stopwatch();
+            timer = new LoopingCountdownTimer(3f);
+            
         }
 
         private void Start()
         {
-            stopwatch.Start();
+            
             timer.Start();
-            Debug.Log(timer.IsRunning);
+            
         }
         
 
@@ -46,7 +45,8 @@ namespace DefaultNamespace
         
         void PrintEnd()
         {
-            Debug.Log(stopwatch.Time);
+            Debug.Log(Time.time);
+            timer.SetNewTime(Time.time);
         }
     }
     
