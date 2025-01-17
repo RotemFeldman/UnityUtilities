@@ -1,0 +1,9 @@
+{
+  "name": "com.rotemfeldman.utilitypackage",
+  "version": "1.0.0",
+  "displayName": "Rotem's Unity Utilities",
+  "description": "A collection of utilities for Unity projects.",
+  "unity": "2021.3",
+  "dependencies": {
+}
+}

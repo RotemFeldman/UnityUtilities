@@ -1,10 +1,12 @@
 using System;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Pool;
+using UnityUtilities.Runtime;
 
 namespace UnityUtilities
 {
-	public class GameObjectPool<T> where T : MonoBehaviour, IGameObjectPoolCallbackReceiver<T>
+	public class GameObjectPool<T> where T : PoolableMonoBehaviour<T>
 	{
 		private readonly ObjectPool<T> _objectPool;
 		private readonly Transform _parent;
@@ -18,44 +20,44 @@ namespace UnityUtilities
 				createFunc: () =>
 				{
 					T instance = UnityEngine.Object.Instantiate(prefab);
-					instance.OnCreate(); 
+					if(parent != null) instance.transform.parent = parent.transform;
 					instance.SetPool(this);
-					if(parent != null) instance.transform.parent = parent;
-					
+					instance.OnCreate(); 
 					return instance;
 				},
 				actionOnGet: obj => obj.OnGet(),
 				actionOnRelease: obj => obj.OnRelease(),
 				actionOnDestroy: obj =>
 				{
-					obj.OnDestroy();
 					UnityEngine.Object.Destroy(obj.gameObject);
 				},
 				defaultCapacity: defaultCapacity,
 				maxSize: maxSize,
 				collectionCheck: collectionCheck
 			);
-			
-			
 		}
+		
+		public Action<T> OnObjectGet = delegate { };
+		public Action<T> OnObjectRelease = delegate { };
 		
 		public int CountAll => _objectPool.CountAll;
 		public int CountActive => _objectPool.CountActive;
+		public void Clear() => _objectPool.Clear();
 
-		public T Get() => _objectPool.Get();
-		public void Release(T obj) => _objectPool.Release(obj);
-		public void Dispose() => _objectPool.Dispose();
-	}
+		public T Get()
+		{
+			var obj =	_objectPool.Get();
+			OnObjectGet.Invoke(obj);
+			return obj;
+		}
 
-	public interface IGameObjectPoolCallbackReceiver<T> where T : MonoBehaviour, IGameObjectPoolCallbackReceiver<T>
-	{
-		
-		void SetPool(GameObjectPool<T> pool);
-		void OnCreate(); 
-		void OnGet();
-		void OnRelease();
-		void OnDestroy();
-		
-
+		public void Release(T obj)
+		{
+			if (!obj.IsReleased)
+			{
+				OnObjectRelease.Invoke(obj);
+				_objectPool.Release(obj);
+			}
+		}
 	}
 }

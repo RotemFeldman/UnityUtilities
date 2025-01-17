@@ -2,6 +2,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityUtilities;
+using UnityUtilities.Runtime;
 using Random = UnityEngine.Random;
 
 namespace DefaultNamespace

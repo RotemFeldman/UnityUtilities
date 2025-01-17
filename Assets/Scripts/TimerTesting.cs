@@ -2,9 +2,10 @@
 using System.Diagnostics;
 using UnityEngine;
 using UnityUtilities;
+using UnityUtilities.Runtime;
 using UnityUtilities.UnityUtilities;
 using Debug = UnityEngine.Debug;
-using Stopwatch = UnityUtilities.Stopwatch;
+using Stopwatch = UnityUtilities.Runtime.Stopwatch;
 
 namespace DefaultNamespace
 {
